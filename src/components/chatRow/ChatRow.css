@@ -1,0 +1,36 @@
+/* ChatRow.css */
+.chat-container {
+  height: 100%;
+  max-width: 768px; /* Adjust the width as needed */
+  margin: auto; /* Center the chat container */
+  overflow-y: auto;
+  position: relative;
+}
+
+.messages {
+  flex-grow: 1; /* Allows the messages area to expand */
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.message {
+  margin: 5px 0; /* Space between messages */
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 75%; /* Limit the width of messages */
+  color: black;
+}
+
+/* Align user messages to the right */
+.message.user {
+  background-color: #f1f1f1; /* Bot message background color */
+  align-self: flex-end; /* Align user messages to the right */
+  text-align: right; /* Align text to the right */
+}
+
+/* Align bot messages to the left */
+.message.bot {
+  align-self: flex-start; /* Align bot messages to the left */
+  text-align: left; /* Align text to the left */
+}

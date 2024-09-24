@@ -1,31 +1,57 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useRef } from 'react';
+import { useState } from 'react';
 
-const TextAreaComponent = () => {
-  const [text, setText] = useState("");
+const ChatBotInput = () => {
+  const [text, setText] = useState('');
+  const textAreaRef = useRef(null);
 
   const handleTextChange = (e) => {
     setText(e.target.value);
   };
 
+  useEffect(() => {
+    if (textAreaRef.current) {
+      // Reset the height to auto to calculate scrollHeight correctly
+      textAreaRef.current.style.height = 'auto';
+      // Dynamically adjust height based on scrollHeight
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+    }
+  }, [text]);
+
   return (
-    <div style={{ maxHeight: "25dvh", overflowY: "auto" }}>
+    <div
+      className='d-flex align-items-center'
+      style={{
+        width: '100%',
+        overflowY: 'auto', // Hide scrollbars
+        maxHeight: '25dvh',
+      }}
+    >
       <textarea
+        ref={textAreaRef}
         value={text}
         onChange={handleTextChange}
-        class="form-control h-10 w-100 resize-none border-0 bg-transparent px-0 py-2 text-primary placeholder-secondary text-black"
-        placeholder="Your placeholder text here"
+        className='form-control border-0 bg-transparent text-black flex-grow-1'
+        style={{
+          resize: 'none', // Disable manual resizing
+        }}
+        placeholder='Message ChatGPT'
+        rows={1}
       />
     </div>
   );
 };
+
 export const InputField = () => {
   return (
-    <div className="fs-6 px-3 px-md-4 mx-auto w-100 px-md-5 px-lg-4 px-xl-5">
-      <div className="d-flex w-100 gap-2 rounded-5 p-2 bg-secondary">
+    <div className='fs-6 px-3 px-md-4 mx-auto w-100 px-md-5 px-lg-4 px-xl-5'>
+      <div
+        className='d-flex w-100 rounded-5 p-2 bg-secondary align-items-end px-sm-2 px-md-4 gap-sm-2 gap-lg-3 mx-auto'
+        style={{ maxWidth: '768px' }}
+      >
         <div>Voice</div>
-
-        <TextAreaComponent />
+        <ChatBotInput />
+        <div>arrow</div>
       </div>
     </div>
   );

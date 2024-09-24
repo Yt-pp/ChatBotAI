@@ -1,0 +1,15 @@
+/* styles.css or your main CSS file */
+@keyframes rotate {
+  /* 0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  } */
+}
+
+.logo {
+  /* animation: rotate 2s linear infinite; Adjust the duration as needed */
+  width: 150px;
+  height: 150px;
+}
