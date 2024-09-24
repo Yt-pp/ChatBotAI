@@ -17,7 +17,7 @@ const Home = () => {
         </div>
       </div>
       {/* input footer */}
-      <div class='w-100 pt-md-0 border border-white border-opacity-20 border-md-0 sticky-bottom'>
+      <div class='w-100 pt-md-0 border border-white border-opacity-20 border-md-0 sticky-bottom bg-white'>
         <InputField />
 
         <div class='position-relative w-100 px-2 py-2 text-center text-secondary d-none d-md-block'>
