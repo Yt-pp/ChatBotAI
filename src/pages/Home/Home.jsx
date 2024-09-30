@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import reactLogo from '../../assets/react.svg';
 import { InputField } from '../../components/inputField/inputField';
 import wzFace from '../../assets/wzFace.png';
 import './Home.css';
 import ChatRow from '../../components/chatRow/chatRow';
-import { sendMessageToApi } from '../../hook/sendMessage';
+import { useSendMessage } from '../../hook/sendMessage';
 
 const Home = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isAPILoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([
     { text: "I'm looking for information about React.", sender: 'user' },
     {
@@ -36,6 +36,7 @@ const Home = () => {
       sender: 'bot',
     },
   ]);
+  const { sendMessage } = useSendMessage();
 
   const handleSend = async (message) => {
     // Append user message to chat
@@ -44,24 +45,19 @@ const Home = () => {
       { text: message, sender: 'user' },
     ]);
     // Set loading state and add a temporary loading message for the bot
-    setIsLoading(true);
     const tempBotMessage = { text: 'Loading...', sender: 'bot' };
     setMessages((prevMessages) => [...prevMessages, tempBotMessage]);
     try {
       // Send the message to the API
-      const { botChat, isLoading } = await sendMessageToApi(message); // Replace with your API call
-
-      // Once the response is received and loading is complete
-      if (!isLoading) {
-        // Once the response is received, replace the loading message
-        setMessages((prevMessages) => {
-          // Replace the last bot message (loading) with the actual response
-          return [
-            ...prevMessages.slice(0, -1), // Remove the last "loading..." message
-            { text: botChat, sender: 'bot' },
-          ];
-        });
-      }
+      const response = await sendMessage(message);
+      // Once the response is received, replace the loading message
+      setMessages((prevMessages) => {
+        // Replace the last bot message (loading) with the actual response
+        return [
+          ...prevMessages.slice(0, -1), // Remove the last "loading..." message
+          { text: response, sender: 'bot' },
+        ];
+      });
     } catch (error) {
       console.error('Error sending message:', error);
 
@@ -75,11 +71,27 @@ const Home = () => {
           },
         ];
       });
-    } finally {
-      // Set loading state to false once complete
-      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const handleBeforeUnload = async (event) => {
+      // This event is triggered when the user refreshes or navigates away from the page
+      try {
+        await sendMessage('bye');
+      } catch (error) {
+        console.error('Error fetching data before unload:', error);
+      }
+    };
+
+    // Add event listener for beforeunload
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []); // Empty dependency array to run on mount
 
   return (
     <>
@@ -92,11 +104,11 @@ const Home = () => {
         </div>
       </div>
       {/* input footer */}
-      <div class='w-100 pt-md-0 border border-white border-opacity-20 border-md-0 sticky-bottom bg-white'>
+      <div className='w-100 pt-md-0 border border-white border-opacity-20 border-md-0 sticky-bottom bg-white'>
         <InputField onSend={handleSend} />
 
-        <div class='position-relative w-100 px-2 py-2 text-center text-secondary d-none d-md-block'>
-          <div class='min-vh-25'>
+        <div className='position-relative w-100 px-2 py-2 text-center text-secondary d-none d-md-block'>
+          <div className='min-vh-25'>
             <div>ChatBotAI can make mistakes. Check important info.</div>
           </div>
         </div>

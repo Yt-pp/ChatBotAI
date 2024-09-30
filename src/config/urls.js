@@ -1,4 +1,4 @@
-const domainUrl = process.env.DOMAIN_URL;
+const domainUrl = import.meta.env.VITE_DOMAIN_URL;
 
 export const URL_SEND_CHAT = {
   //send chat
