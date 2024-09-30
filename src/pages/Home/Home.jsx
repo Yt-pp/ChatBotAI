@@ -4,8 +4,10 @@ import { InputField } from '../../components/inputField/inputField';
 import wzFace from '../../assets/wzFace.png';
 import './Home.css';
 import ChatRow from '../../components/chatRow/chatRow';
+import { sendMessageToApi } from '../../hook/sendMessage';
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([
     { text: "I'm looking for information about React.", sender: 'user' },
     {
@@ -34,31 +36,51 @@ const Home = () => {
       sender: 'bot',
     },
   ]);
+
   const handleSend = async (message) => {
     // Append user message to chat
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: message, sender: 'user' },
     ]);
+    // Set loading state and add a temporary loading message for the bot
+    setIsLoading(true);
+    const tempBotMessage = { text: 'Loading...', sender: 'bot' };
+    setMessages((prevMessages) => [...prevMessages, tempBotMessage]);
+    try {
+      // Send the message to the API
+      const { botChat, isLoading } = await sendMessageToApi(message); // Replace with your API call
 
-    // Send the message to the API and get the response
-    // const response = await sendMessageToApi(message); // Replace with your API call
+      // Once the response is received and loading is complete
+      if (!isLoading) {
+        // Once the response is received, replace the loading message
+        setMessages((prevMessages) => {
+          // Replace the last bot message (loading) with the actual response
+          return [
+            ...prevMessages.slice(0, -1), // Remove the last "loading..." message
+            { text: botChat, sender: 'bot' },
+          ];
+        });
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
 
-    // // Append bot response to chat
-    // setMessages((prevMessages) => [
-    //   ...prevMessages,
-    //   { text: response, sender: 'bot' },
-    // ]);
+      // Handle error by replacing the "loading..." message with an error message
+      setMessages((prevMessages) => {
+        return [
+          ...prevMessages.slice(0, -1), // Remove the last "loading..." message
+          {
+            text: 'Error retrieving response. Please try again.',
+            sender: 'bot',
+          },
+        ];
+      });
+    } finally {
+      // Set loading state to false once complete
+      setIsLoading(false);
+    }
   };
 
-  const sendMessageToApi = async (message) => {
-    // Simulate API call delay and response
-    return new Promise((resolve) =>
-      setTimeout(() => {
-        resolve('React is a JavaScript library for building user interfaces.');
-      }, 1000)
-    );
-  };
   return (
     <>
       <div className='flex-grow-1 relative'>
