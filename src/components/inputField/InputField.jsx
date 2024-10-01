@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
+import SpeechToText from '../voice/voice';
 
 const ChatBotInput = ({ onSend }) => {
   const [text, setText] = useState('');
@@ -27,7 +28,9 @@ const ChatBotInput = ({ onSend }) => {
 
   return (
     <>
-      <div>Voice</div>
+      <div>
+        <SpeechToText setMsg={setText} onSend={handleSend} />
+      </div>
       <div
         className='d-flex align-items-center'
         style={{
