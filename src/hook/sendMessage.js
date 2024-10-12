@@ -10,7 +10,7 @@ export const useSendMessage = () => {
         body: JSON.stringify({ message }),
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
+          // 'Access-Control-Allow-Origin': '*',
         },
       });
       // You may want to use the mutate function to revalidate the SWR cache
