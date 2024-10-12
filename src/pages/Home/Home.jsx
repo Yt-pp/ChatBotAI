@@ -8,34 +8,7 @@ import { useSendMessage } from "../../hook/sendMessage";
 
 const Home = () => {
   // const [isAPILoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState([
-    { text: "I'm looking for information about React.", sender: "user" },
-    {
-      text: "React is a JavaScript library for building user interfaces.",
-      sender: "bot",
-    },
-    { text: "Can you tell me more about its features?", sender: "user" },
-    {
-      text: "Sure! React allows you to build single-page applications with a component-based architecture.",
-      sender: "bot",
-    },
-    { text: "Can you tell me more about its features?", sender: "user" },
-    {
-      text: "Sure! React allows you to build single-page applications with a component-based architecture.",
-      sender: "bot",
-    },
-    { text: "Can you tell me more about its features?", sender: "user" },
-    {
-      text: "Sure! React allows you to build single-page applications with a component-based architecture.",
-      sender: "bot",
-    },
-
-    { text: "Can you tell me more about its features?", sender: "user" },
-    {
-      text: "Sure! React allows you to build single-page applications with a component-based architecture.",
-      sender: "bot",
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
   const { sendMessage } = useSendMessage();
 
   const handleSend = async (message) => {
