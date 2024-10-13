@@ -20,6 +20,7 @@ const Home = () => {
     // Set loading state and add a temporary loading message for the bot
     const tempBotMessage = { text: "Loading...", sender: "bot" };
     setMessages((prevMessages) => [...prevMessages, tempBotMessage]);
+    let alertScheduled = false; // Track whether an alert is already scheduled
     try {
       // Send the message to the API
       const response = await sendMessage(message);
@@ -31,11 +32,13 @@ const Home = () => {
         const currentTime = Date.now();
         const timeUntilAlert = endTime - currentTime;
 
-        if (timeUntilAlert > 0) {
+        if (timeUntilAlert > 0 && !alertScheduled) {
           // Set a timeout to alert the user when the time is up
           setTimeout(() => {
             alert(response?.alarm_remind_thing);
+            alertScheduled = false; // Reset the alert status after it triggers
           }, timeUntilAlert);
+          alertScheduled = true; // Mark that an alert has been scheduled
         }
       }
       // Once the response is received, replace the loading message
