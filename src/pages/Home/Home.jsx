@@ -6,9 +6,45 @@ import "./Home.css";
 import ChatRow from "../../components/chatRow/chatRow";
 import { useSendMessage } from "../../hook/sendMessage";
 
+
 const Home = () => {
+
   // const [isAPILoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const dummyMessages = [
+    {
+      id: 1,
+      text: "你好",
+      sender: "bot",
+      timestamp: new Date().toISOString(),
+    },
+    {
+      id: 2,
+      text: "I'm looking for information about your services.",
+      sender: "user",
+      timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(), // 5 minutes ago
+    },
+    {
+      id: 3,
+      text: "We offer a variety of services, including web development and design.",
+      sender: "bot",
+      timestamp: new Date(Date.now() - 1000 * 60 * 10).toISOString(), // 10 minutes ago
+    },
+    {
+      id: 4,
+      text: "Can you tell me more about web development?",
+      sender: "user",
+      timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // 15 minutes ago
+    },
+    {
+      id: 5,
+      text: "Sure! We specialize in creating responsive and user-friendly websites.",
+      sender: "bot",
+      timestamp: new Date(Date.now() - 1000 * 60 * 20).toISOString(), // 20 minutes ago
+    },
+  ];
+  
+  // Set the dummy data to messages
+  const [messages, setMessages] = useState(dummyMessages);
   const { sendMessage } = useSendMessage();
 
   const handleSend = async (message) => {
