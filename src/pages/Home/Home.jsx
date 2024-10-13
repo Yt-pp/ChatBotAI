@@ -25,7 +25,7 @@ const Home = () => {
       const response = await sendMessage(message);
       // Check if the response includes an end time
       if (response?.alarm) {
-        const endTime = Number(response?.alarm_remind_time)*1000; // End time in milliseconds
+        const endTime = Number(response?.alarm_remind_time) * 1000; // End time in milliseconds
 
         // Calculate the time until the alert should trigger
         const currentTime = Date.now();
