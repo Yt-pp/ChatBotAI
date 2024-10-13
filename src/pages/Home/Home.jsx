@@ -23,23 +23,23 @@ const Home = () => {
     try {
       // Send the message to the API
       const response = await sendMessage(message);
+      // Check if the response includes an end time
+      if (response?.alarm) {
+        const endTime = Number(response?.alarm_remind_time)*1000; // End time in milliseconds
+
+        // Calculate the time until the alert should trigger
+        const currentTime = Date.now();
+        const timeUntilAlert = endTime - currentTime;
+
+        if (timeUntilAlert > 0) {
+          // Set a timeout to alert the user when the time is up
+          setTimeout(() => {
+            alert(response?.alarm_remind_thing);
+          }, timeUntilAlert);
+        }
+      }
       // Once the response is received, replace the loading message
       setMessages((prevMessages) => {
-        // Check if the response includes an end time
-        if (response?.alarm) {
-          const endTime = Number(response?.alarm_remind_time)*1000; // End time in milliseconds
-
-          // Calculate the time until the alert should trigger
-          const currentTime = Date.now();
-          const timeUntilAlert = endTime - currentTime;
-
-          if (timeUntilAlert > 0) {
-            // Set a timeout to alert the user when the time is up
-            setTimeout(() => {
-              alert(response?.alarm_remind_thing);
-            }, timeUntilAlert);
-          }
-        }
         // Replace the last bot message (loading) with the actual response
         return [
           ...prevMessages.slice(0, -1), // Remove the last "loading..." message
