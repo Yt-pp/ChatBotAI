@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ChatRow.css"; // Import your CSS file for styling
 import { useSpeechSynthesis } from "react-speech-kit";
+import speaker from "../../assets/sound.png";
 
 const ChatRow = ({ messages = [] }) => {
   const messagesEndRef = useRef(null);
@@ -10,7 +11,9 @@ const ChatRow = ({ messages = [] }) => {
   useEffect(() => {
     // Set the voice based on available voices
     const availableVoices = speechSynthesis.getVoices();
-    const chineseVoice = availableVoices.find(voice => voice.lang === 'zh-CN');
+    const chineseVoice = availableVoices.find(
+      (voice) => voice.lang === "zh-TW"
+    );
     if (chineseVoice) {
       setSelectedVoice(chineseVoice);
     }
@@ -32,12 +35,27 @@ const ChatRow = ({ messages = [] }) => {
       <div className="messages">
         {messages.map((message, index) => (
           <>
-            <div key={index} className={`message ${message.sender}`}>
+            <div
+              key={index}
+              className={`message d-flex flex-column ${message.sender}`}
+            >
               {message.text}
+              {message.sender === "bot" && (
+                <img
+                  src={speaker}
+                  alt="Speaker"
+                  width="25"
+                  height="25"
+                  onClick={() => handleSpeak(message.text)}
+                  style={{
+                    cursor: "pointer", // Pointer cursor
+                    transition: "opacity 0.3s", // Smooth hover transition
+                  }}
+                  onMouseOver={(e) => (e.currentTarget.style.opacity = "0.7")} // Hover effect
+                  onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+                />
+              )}
             </div>
-            {message.sender === "bot" && (
-              <button onClick={() => handleSpeak(message.text)}>Speak</button>
-            )}
           </>
         ))}
       </div>

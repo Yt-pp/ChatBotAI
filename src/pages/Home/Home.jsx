@@ -6,7 +6,6 @@ import "./Home.css";
 import ChatRow from "../../components/chatRow/chatRow";
 import { useSendMessage } from "../../hook/sendMessage";
 
-
 const Home = () => {
 
   // const [isAPILoading, setIsLoading] = useState(false);
@@ -25,7 +24,7 @@ const Home = () => {
     },
     {
       id: 3,
-      text: "We offer a variety of services, including web development and design.",
+      text: "小受妈妈很漂亮",
       sender: "bot",
       timestamp: new Date(Date.now() - 1000 * 60 * 10).toISOString(), // 10 minutes ago
     },
@@ -37,7 +36,7 @@ const Home = () => {
     },
     {
       id: 5,
-      text: "Sure! We specialize in creating responsive and user-friendly websites.",
+      text: "你在看三小啦",
       sender: "bot",
       timestamp: new Date(Date.now() - 1000 * 60 * 20).toISOString(), // 20 minutes ago
     },
@@ -45,9 +44,15 @@ const Home = () => {
   
   // Set the dummy data to messages
   const [messages, setMessages] = useState(dummyMessages);
+  const [isFirstMessageSent, setIsFirstMessageSent] = useState(false); // Flag to track if first message has been sent
   const { sendMessage } = useSendMessage();
 
   const handleSend = async (message) => {
+    if (!isFirstMessageSent) {
+      // Clear dummy messages on the first message
+      setMessages([]);
+      setIsFirstMessageSent(true); // Mark that the first message has been sent
+    }
     // Append user message to chat
     setMessages((prevMessages) => [
       ...prevMessages,

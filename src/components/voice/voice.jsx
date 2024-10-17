@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import mircoOn from "../../assets/micro_on.png";
+import microOff from "../../assets/micro_off.png";
 
 // Check for SpeechRecognition support
 const SpeechRecognition =
@@ -15,7 +17,7 @@ const SpeechToText = ({ setMsg, onSend }) => {
   // Set up speech recognition settings
   recognition.continuous = false; // Stops automatically after finishing a sentence
   recognition.interimResults = false; // Only show final results
-  recognition.lang = 'zh-CN'; // Set language to English
+  recognition.lang = 'zh-CN'; // Set language to Chinese
 
   // Handle starting speech recognition
   const startListening = () => {
@@ -45,19 +47,18 @@ const SpeechToText = ({ setMsg, onSend }) => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <button
+      <div
         onClick={isListening ? stopListening : startListening}
         style={{
-          padding: '10px 20px',
-          fontSize: '1.2rem',
-          backgroundColor: isListening ? '#f44336' : '#4caf50',
+          padding: '10px',
+          backgroundColor: isListening ? '#f44336' : '#FFFFFF',
           color: '#fff',
-          border: 'none',
+          borderRadius: '50%',
           cursor: 'pointer',
         }}
       >
-        {isListening ? 'Stop Listening' : 'Start Listening'}
-      </button>
+        {isListening ?  <img src={microOff} width="25" height="25" /> :  <img src={mircoOn} width="25" height="25" />}
+      </div>
     </div>
   );
 };
