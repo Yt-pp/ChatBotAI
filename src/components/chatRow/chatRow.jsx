@@ -38,8 +38,10 @@ const ChatRow = ({ messages = [] }) => {
             <div
               key={index}
               className={`message d-flex flex-column ${message.sender}`}
+              
             >
-              {message.text}
+              {/* {message.text} */}
+              <div dangerouslySetInnerHTML={{ __html: message.text }}></div>
               {message.sender === "bot" && (
                 <img
                   src={speaker}

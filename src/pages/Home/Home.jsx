@@ -12,7 +12,7 @@ const Home = () => {
   const dummyMessages = [
     {
       id: 1,
-      text: "你好",
+      text: "你好<a href='https://www.netflix.com/my-en/'>example</a>",
       sender: "bot",
       timestamp: new Date().toISOString(),
     },
