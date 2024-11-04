@@ -13,3 +13,15 @@
   width: 150px;
   height: 150px;
 }
+
+.fixed-bottom-right {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10000; /* Ensures it appears above other content */
+}
+
+.mini-map-container {
+  display: flex;
+  gap: 2px;
+}

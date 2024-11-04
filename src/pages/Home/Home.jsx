@@ -5,9 +5,9 @@ import wzFace from "../../assets/wzFace.png";
 import "./Home.css";
 import ChatRow from "../../components/chatRow/chatRow";
 import { useSendMessage } from "../../hook/sendMessage";
+import MiniMap from "../../components/minimap/MiniMap";
 
 const Home = () => {
-
   // const [isAPILoading, setIsLoading] = useState(false);
   const dummyMessages = [
     {
@@ -41,11 +41,18 @@ const Home = () => {
       timestamp: new Date(Date.now() - 1000 * 60 * 20).toISOString(), // 20 minutes ago
     },
   ];
-  
+
   // Set the dummy data to messages
   const [messages, setMessages] = useState(dummyMessages);
   const [isFirstMessageSent, setIsFirstMessageSent] = useState(false); // Flag to track if first message has been sent
   const { sendMessage } = useSendMessage();
+  const [highlightedRooms, setHighlightedRooms] = useState({});
+  const toggleHighlight = (name) => {
+    setHighlightedRooms((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
+  };
 
   const handleSend = async (message) => {
     if (!isFirstMessageSent) {
@@ -65,6 +72,10 @@ const Home = () => {
     try {
       // Send the message to the API
       const response = await sendMessage(message);
+      // Check if response.room is not null and toggle highlight
+      if (response?.room) {
+        toggleHighlight(response.room); // Toggle highlight for the room name
+      }
       // Check if the response includes an end time
       if (response?.alarm) {
         const endTime = Number(response?.alarm_remind_time) * 1000; // End time in milliseconds
@@ -128,6 +139,11 @@ const Home = () => {
   return (
     <>
       <div className="flex-grow-1 relative">
+        {/* Mini Map */}
+        <MiniMap
+          highlightedRooms={highlightedRooms}
+          toggleHighlight={toggleHighlight}
+        />
         {/* <div className='position-absolute top-50 start-50 translate-middle d-flex'>
           <img src={wzFace} className='logo react' alt='React logo' />
         </div> */}
