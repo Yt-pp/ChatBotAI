@@ -18,6 +18,15 @@ const ChatBotInput = ({ onSend }) => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      // Prevent the default "Enter" behavior (like adding a new line) and send the message
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+
   useEffect(() => {
     if (textAreaRef.current) {
       // Reset the height to auto to calculate scrollHeight correctly
@@ -44,6 +53,7 @@ const ChatBotInput = ({ onSend }) => {
           ref={textAreaRef}
           value={text}
           onChange={handleTextChange}
+          onKeyDown={handleKeyDown} // Add the keydown handler here
           className="form-control border-0 bg-transparent text-black flex-grow-1"
           style={{
             resize: "none", // Disable manual resizing

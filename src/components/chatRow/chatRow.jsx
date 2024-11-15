@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import "./ChatRow.css"; // Import your CSS file for styling
 import { useSpeechSynthesis } from "react-speech-kit";
 import speaker from "../../assets/sound.png";
+import botAvatar from "../../assets/botAvatar.png";
+import userAvatar from "../../assets/userAvatar.png";
 
 const ChatRow = ({ messages = [] }) => {
   const messagesEndRef = useRef(null);
@@ -37,11 +39,26 @@ const ChatRow = ({ messages = [] }) => {
           <>
             <div
               key={index}
-              className={`message d-flex flex-column ${message.sender}`}
-              
+              className={`message d-flex text-start ${message.sender === "bot" ? "" : "align-self-end flex-row-reverse"}`}
             >
               {/* {message.text} */}
-              <div dangerouslySetInnerHTML={{ __html: message.text }}></div>
+  
+                <img
+                  src={message.sender === "bot" ? botAvatar : userAvatar} // Conditional avatar based on sender
+                  alt={message.sender}
+                  className={`${message.sender === "bot" ? "me-2" : "ms-2"}`}
+                  width="30"
+                  height="30"
+                  style={{
+                    borderRadius: "50%", // Makes the image round
+                    marginTop: "10px",
+                    zIndex: "99999999px", 
+                  }}
+                />
+                <div  className={`message d-flex flex-column ${message.sender}`}>
+                <div dangerouslySetInnerHTML={{ __html: message.text }}></div>
+     
+
               {message.sender === "bot" && (
                 <img
                   src={speaker}
@@ -57,6 +74,7 @@ const ChatRow = ({ messages = [] }) => {
                   onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
                 />
               )}
+            </div>
             </div>
           </>
         ))}
